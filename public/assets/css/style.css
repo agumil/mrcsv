@@ -1,0 +1,34 @@
+html,
+body {
+/*    background-image: url("../images/home-background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;*/
+    height: 100%;
+}
+
+.container {
+    height: 100%;
+}
+
+.card {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.special-card {
+    background-color: rgba(245, 245, 245, 1);
+    opacity: .95;
+}
+
+.custom-file-input.selected:lang(en)::after {
+    content: "" !important;
+}
+
+.custom-file {
+    overflow: hidden;
+}
+
+.custom-file-input {
+    white-space: nowrap;
+}
+
