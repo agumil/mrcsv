@@ -16,6 +16,7 @@ class HomeController extends BaseController
     public function index()
     {
         // $this->session->set('uuid', $this->uuid->toString());
+        // Set sesi pake UUID
         $_SESSION['uuid'] = $this->uuid->toString();
         return view('home');
     }

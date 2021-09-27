@@ -1,5 +1,8 @@
 <?php
 
+
+// PSR 4
+
 namespace App\Controllers;
 
 use App\Models\Services\FileService;
@@ -12,11 +15,13 @@ class FileController extends BaseController
 
     public function __construct()
     {
+        // Inisiasi model (service)
         $this->file_service = new FileService();
     }
 
     public function upload()
     {
+        // Cek file yang valid
         $file = $this->request->getFile('file-upload');
         if (! $file->isValid()) {
             throw new \RuntimeException($file->getErrorString().'('.$file->getError().')');
@@ -30,20 +35,24 @@ class FileController extends BaseController
         //     ],
         // ]);
 
-        // $isValidated = $this->validate([
-        //     'file-upload' => [
-        //         'max_size[file-upload,5120]',
-        //         'mime_in[file-upload,text/csv,text/plain]',
-        //         'ext_in[file-upload,csv]',
-        //     ],
-        // ]);
+        // Validasi
+        $isValidated = $this->validate([
+            'file-upload' => [
+                'max_size[file-upload,5120]',
+                'mime_in[file-upload,text/csv,text/plain]',
+                'ext_in[file-upload,csv]',
+            ],
+        ]);
 
-        // if (!$isValidated) {
-        //     return redirect()->route('/')->with('notif', $this->validator->getError());
-        // }
+        // Cek validasi
+        if (!$isValidated) {
+            return redirect()->route('/')->with('notif', $this->validator->getError());
+        }
         
+        // Simpan file
         $this->file_service->store($file);
 
+        // Akses halaman hasil upload (table)
         return redirect()->route('file/result');
     }
 
@@ -78,9 +87,10 @@ class FileController extends BaseController
             'data' => $csv->getActiveSheet()->toArray()
         ]);
 
+        // Library DOMPDF
         $pdf = new Dompdf();
         $pdf->loadHtml($html);
-        $pdf->setPaper('A3', 'landscape');
+        $pdf->setPaper('A4', 'landscape');
         $pdf->render();
 
         return $pdf->stream('cetak.pdf', ['Attachment' => 0]);
